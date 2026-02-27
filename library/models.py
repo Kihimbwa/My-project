@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class Book(models.Model):
     title = models.CharField(max_length=200)
@@ -8,6 +9,9 @@ class Book(models.Model):
     publication_date = models.DateField()
     genre = models.CharField(max_length=50)
     available_copies = models.IntegerField(default=1)
+    cover_image = models.ImageField(upload_to='book_covers/', null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.title
