@@ -88,7 +88,7 @@ bash
 python manage.py runserver
 ```
 
-The API will be available at `http://127.0.0.1:8000/`
+The API will be available at `fetch(`${process.env.REACT_APP_API_URL}/api/books/`)`
 
 ### Frontend Setup
 
@@ -110,7 +110,7 @@ bash
 npm start
 ```
 
-The frontend will be available at `http://localhost:3000/`
+The frontend will be available at `https://my-project-5fi1.onrender.com`
 
 ## API Endpoints
 
@@ -167,7 +167,7 @@ library_system/
 
 1. Start the Django backend server
 2. Start the React frontend server
-3. Open your browser and navigate to `http://localhost:3000`
+3. Open your browser and navigate to `fetch(`${process.env.REACT_APP_API_URL}/api/books/`)`
 4. Register a new student account or login
 5. Browse the book catalog and borrow books
 6. View your borrowed books and return them
