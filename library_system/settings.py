@@ -7,7 +7,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-secret")
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']  # unaweza kubadilisha baadaye
+ALLOWED_HOSTS = ['*', 'library_system.onrender.com']  # Backend URL for Render
 
 INSTALLED_APPS = [
     'django.contrib.admin',
