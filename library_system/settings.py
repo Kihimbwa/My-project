@@ -39,6 +39,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://library-frontend-orpin.vercel.app",
 ]
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = False
 
 ROOT_URLCONF = 'library_system.urls'
 
