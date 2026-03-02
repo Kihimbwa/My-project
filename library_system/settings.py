@@ -48,6 +48,11 @@ CSRF_TRUSTED_ORIGINS = [
     "https://library_system-api.onrender.com",
 ]
 
+# Additional CORS settings for preflight requests
+CORS_EXPOSE_HEADERS = ['Content-Type', 'Authorization']
+CORS_ALLOW_METHODS = ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT']
+CORS_ALLOW_HEADERS = ['accept', 'accept-encoding', 'authorization', 'content-type', 'origin', 'user-agent', 'x-csrftoken', 'x-requested-with']
+
 ROOT_URLCONF = 'library_system.urls'
 
 TEMPLATES = [
