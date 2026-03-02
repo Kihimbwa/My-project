@@ -35,7 +35,10 @@ MIDDLEWARE = [
 ]
 
 # 🔥 CORS FIX
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://library-frontend-orpin.vercel.app",
+]
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'library_system.urls'
 
@@ -87,3 +90,4 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ],
 }
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
