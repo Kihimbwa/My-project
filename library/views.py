@@ -23,27 +23,37 @@ class MemberViewSet(viewsets.ModelViewSet):
 class BorrowViewSet(viewsets.ModelViewSet):
     queryset = BorrowRecord.objects.all()
     serializer_class = BorrowSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        return BorrowRecord.objects.filter(member__user=self.request.user)
+        user = self.request.user
+        if user.is_superuser:
+            return BorrowRecord.objects.all()
+        try:
+            member = Member.objects.get(user=user)
+            return BorrowRecord.objects.filter(member=member)
+        except Member.DoesNotExist:
+            return BorrowRecord.objects.none()
 
     def perform_create(self, serializer):
         try:
             member = Member.objects.get(user=self.request.user)
-            book = serializer.validated_data.get('book')
-            
-            # Check if book is available
-            if book.available_copies < 1:
-                raise serializers.ValidationError({'error': 'No copies available'})
-            
-            # Decrease available copies
-            book.available_copies -= 1
-            book.save()
-            
-            serializer.save(member=member)
         except Member.DoesNotExist:
-            raise serializers.ValidationError({'error': 'Member profile not found. Please contact the librarian.'})
+            raise serializers.ValidationError({'error': 'Member profile not found. Please contact the librarian to create your profile.'})
+        
+        book_id = serializer.validated_data.get('book_id')
+        try:
+            book = Book.objects.get(id=book_id)
+        except Book.DoesNotExist:
+            raise serializers.ValidationError({'error': 'Book not found'})
+        
+        if book.available_copies < 1:
+            raise serializers.ValidationError({'error': 'No copies available'})
+        
+        book.available_copies -= 1
+        book.save()
+        
+        serializer.save(member=member, book=book)
 
     @action(detail=True, methods=['post'])
     def return_book(self, request, pk=None):
