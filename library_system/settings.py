@@ -72,7 +72,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'library_system.wsgi.application'
 
-import dj_database_url
 
 import dj_database_url
 
