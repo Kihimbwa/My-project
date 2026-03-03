@@ -37,7 +37,7 @@ MIDDLEWARE = [
 # 🔥 CORS FIX
 CORS_ALLOWED_ORIGINS = [
     "https://library-frontend-orpin.vercel.app",
-    "https://library_system-api.onrender.com",
+    "https://my-project-5fi1.onrender.com",
 ]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = False
@@ -45,7 +45,7 @@ CORS_ALLOW_ALL_ORIGINS = False
 # Required when CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     "https://library-frontend-orpin.vercel.app",
-    "https://library_system-api.onrender.com",
+    "https://my-project-5fi1.onrender.com",
 ]
 
 # Additional CORS settings for preflight requests
