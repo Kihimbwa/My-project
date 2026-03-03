@@ -7,7 +7,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-secret")
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['*', 'library_system.onrender.com']  # Backend URL for Render
+ALLOWED_HOSTS = ['*', 'my-project-5fi1.onrender.com']  # Backend URL for Render
 
 INSTALLED_APPS = [
     'django.contrib.admin',
