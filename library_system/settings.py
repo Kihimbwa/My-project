@@ -72,12 +72,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'library_system.wsgi.application'
 
+import dj_database_url
+
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='postgresql://library_db_qy0q_user:3t8TgcG7kgVmjq8v0vEwiu9umXHGurd8@dpg-d6gntgbuibrs739ge9sg-a.oregon-postgres.render.com:5432/library_db_qy0q'
+    )
 }
+
 
 AUTH_PASSWORD_VALIDATORS = []
 
