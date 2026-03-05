@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-secret")
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*', 'my-project-5fi1.onrender.com']
 
@@ -38,9 +38,10 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "https://library-frontend-orpin.vercel.app",
     "https://my-project-5fi1.onrender.com",
+    "https://*.vercel.app",
 ]
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_ALL_ORIGINS = True
 
 CSRF_TRUSTED_ORIGINS = [
     "https://library-frontend-orpin.vercel.app",

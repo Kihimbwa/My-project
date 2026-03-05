@@ -41,7 +41,11 @@ class BorrowViewSet(viewsets.ModelViewSet):
         except Member.DoesNotExist:
             raise serializers.ValidationError({'error': 'Member profile not found. Please contact the librarian to create your profile.'})
         
-        book_id = serializer.validated_data.get('book_id')
+        # Get book_id from validated_data - PrimaryKeyRelatedField returns the object
+        book_data = serializer.validated_data.get('book_id')
+        # If it's a Book object, get the ID, otherwise use directly
+        book_id = book_data.id if hasattr(book_data, 'id') else book_data
+        
         try:
             book = Book.objects.get(id=book_id)
         except Book.DoesNotExist:
