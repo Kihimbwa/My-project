@@ -33,10 +33,18 @@ class BookSerializer(serializers.ModelSerializer):
 class BorrowSerializer(serializers.ModelSerializer):
     book = BookSerializer(read_only=True)
     member = MemberSerializer(read_only=True)
-    book_id = serializers.PrimaryKeyRelatedField(queryset=Book.objects.all(), write_only=True)
+    book_id = serializers.IntegerField(write_only=True)  # Changed to IntegerField
     expected_return_date = serializers.DateField()
 
     class Meta:
         model = BorrowRecord
         fields = ['id', 'book', 'member', 'book_id', 'borrow_date', 'expected_return_date', 'actual_return_date', 'penalty']
         read_only_fields = ['borrow_date', 'actual_return_date', 'penalty']
+    
+    def create(self, validated_data):
+        # Get the book by ID
+        book_id = validated_data.pop('book_id')
+        book = Book.objects.get(id=book_id)
+        
+        # Create the borrow record with the book object
+        return BorrowRecord.objects.create(book=book, **validated_data)

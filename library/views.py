@@ -41,10 +41,8 @@ class BorrowViewSet(viewsets.ModelViewSet):
         except Member.DoesNotExist:
             raise serializers.ValidationError({'error': 'Member profile not found. Please contact the librarian to create your profile.'})
         
-        # Get book_id from validated_data - PrimaryKeyRelatedField returns the object
-        book_data = serializer.validated_data.get('book_id')
-        # If it's a Book object, get the ID, otherwise use directly
-        book_id = book_data.id if hasattr(book_data, 'id') else book_data
+        # Get book_id from validated_data
+        book_id = serializer.validated_data.get('book_id')
         
         try:
             book = Book.objects.get(id=book_id)
@@ -54,10 +52,12 @@ class BorrowViewSet(viewsets.ModelViewSet):
         if book.available_copies < 1:
             raise serializers.ValidationError({'error': 'No copies available'})
         
+        # Decrease available copies
         book.available_copies -= 1
         book.save()
         
-        serializer.save(member=member, book=book)
+        # Save with member - the serializer's create method handles the book
+        serializer.save(member=member)
 
     @action(detail=True, methods=['post'])
     def return_book(self, request, pk=None):
