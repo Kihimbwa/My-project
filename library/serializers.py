@@ -22,18 +22,32 @@ class BookSerializer(serializers.ModelSerializer):
         fields = '__all__'
     
     def get_cover_image(self, obj):
-        if obj.cover_image:
-            request = self.context.get('request')
-            if request:
-                return request.build_absolute_uri(obj.cover_image.url)
-            # Fallback: construct URL manually
-            return f"{settings.MEDIA_URL}{obj.cover_image.url}"
-        return None
+        if not obj.cover_image:
+            return None
+            
+        # Get the image URL from the model
+        image_url = obj.cover_image.url
+        
+        # If it already starts with http, return as is
+        if image_url.startswith('http'):
+            return image_url
+            
+        # Get request from context
+        request = self.context.get('request')
+        if request:
+            return request.build_absolute_uri(image_url)
+        
+        # Fallback: construct URL manually - ensure proper format
+        backend_url = getattr(settings, 'BACKEND_URL', 'https://my-project-5fi1.onrender.com')
+        # Make sure backend_url doesn't end with / and image_url starts with /
+        if not image_url.startswith('/'):
+            image_url = '/' + image_url
+        return f"{backend_url}{image_url}"
 
 class BorrowSerializer(serializers.ModelSerializer):
     book = BookSerializer(read_only=True)
     member = MemberSerializer(read_only=True)
-    book_id = serializers.IntegerField(write_only=True)  # Changed to IntegerField
+    book_id = serializers.IntegerField(write_only=True)
     expected_return_date = serializers.DateField()
 
     class Meta:
@@ -42,9 +56,6 @@ class BorrowSerializer(serializers.ModelSerializer):
         read_only_fields = ['borrow_date', 'actual_return_date', 'penalty']
     
     def create(self, validated_data):
-        # Get the book by ID
         book_id = validated_data.pop('book_id')
         book = Book.objects.get(id=book_id)
-        
-        # Create the borrow record with the book object
         return BorrowRecord.objects.create(book=book, **validated_data)
