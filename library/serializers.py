@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import Book, Member, BorrowRecord
 from django.contrib.auth.models import User
-from django.conf import settings
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,25 +23,8 @@ class BookSerializer(serializers.ModelSerializer):
     def get_cover_image(self, obj):
         if not obj.cover_image:
             return None
-            
-        # Get the image URL from the model
-        image_url = obj.cover_image.url
-        
-        # If it already starts with http, return as is
-        if image_url.startswith('http'):
-            return image_url
-            
-        # Get request from context
-        request = self.context.get('request')
-        if request:
-            return request.build_absolute_uri(image_url)
-        
-        # Fallback: construct URL manually - ensure proper format
-        backend_url = getattr(settings, 'BACKEND_URL', 'https://my-project-5fi1.onrender.com')
-        # Make sure backend_url doesn't end with / and image_url starts with /
-        if not image_url.startswith('/'):
-            image_url = '/' + image_url
-        return f"{backend_url}{image_url}"
+        # Always return just the relative URL path
+        return obj.cover_image.url
 
 class BorrowSerializer(serializers.ModelSerializer):
     book = BookSerializer(read_only=True)
