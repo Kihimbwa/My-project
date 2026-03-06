@@ -66,7 +66,7 @@ function BorrowedBooks() {
                 className="borrowed-cover"
                 style={{ 
                   background: borrow.book.cover_image 
-                    ? `url(${API_URL}${borrow.book.cover_image})` // ✅ fixed
+                    ? `url(${borrow.book.cover_image})` // Use full URL directly from API
                     : getGradient(borrow.book.title),
                   backgroundSize: 'cover',
                   backgroundPosition: 'center'
